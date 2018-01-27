@@ -10,26 +10,30 @@
 
 typedef struct
 {
-    int pos_x;
-    int pos_y;
-    char symbol;
+    int x;
+    int y;
+    char sign;
+    GtkButton *clicked_button;
 
-} field;
+    //GtkWidget *test_label;
 
+} coordinates;
 
 typedef struct
 {
     int x;
     int y;
-    GtkWidget *test_label;
+    char sign;
 
-} coordinates;
+} field;
+
 
 extern GtkWidget *grid;
+extern field game_data[4][4];
+extern int size;
 
-extern field *field_grid[];
-
-void create_grid(int size);
+void create_grid();
+int check_for_win(coordinates *data);
 int click_parser(GtkWidget *widget, gpointer click_data);
 
 /*

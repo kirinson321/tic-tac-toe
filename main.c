@@ -7,6 +7,7 @@
 #include "tic_tac_toe.h"
 
 GtkWidget *grid;
+int size=4;
 
 int main(int argc, char *argv[])
 {
@@ -20,16 +21,12 @@ int main(int argc, char *argv[])
     grid = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(window), grid);
 
-    create_grid(4);
+    create_grid();
 
     // testing new functionalities here
 
     //debugger will be used to display debug messages;
     //should write a new function to change its message when a button is pressed
-
-    GtkWidget *debugger;
-    debugger = gtk_label_new("test");
-    gtk_grid_attach(GTK_GRID(grid), debugger, 1, 6, 2, 1);
 
     //
 
