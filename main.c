@@ -3,9 +3,7 @@
  * Projekt kółko i krzyżyk
 */
 
-//#include <stdio.h>
 #include <gtk/gtk.h>
-//#include <stdlib.h>
 #include "tic_tac_toe.h"
 
 GtkWidget *grid;
@@ -23,6 +21,17 @@ int main(int argc, char *argv[])
     gtk_container_add(GTK_CONTAINER(window), grid);
 
     create_grid(4);
+
+    // testing new functionalities here
+
+    //debugger will be used to display debug messages;
+    //should write a new function to change its message when a button is pressed
+
+    GtkWidget *debugger;
+    debugger = gtk_label_new("test");
+    gtk_grid_attach(GTK_GRID(grid), debugger, 1, 6, 2, 1);
+
+    //
 
     gtk_widget_show_all(window);
 
