@@ -2,6 +2,7 @@
  * Marcin Trajfacki, 301199
  * Projekt kółko i krzyżyk
 */
+#include <stdlib.h>
 #include "tic_tac_toe.h"
 
 int check_for_win(coordinates *data)
@@ -15,10 +16,10 @@ int check_for_win(coordinates *data)
     {
         for(int j=0; j<size; j++)
         {
-            if(game_data[j][i].sign == 'X')
+            if(game_data[j][i]->sign == 'X')
                 vertical_counter++;
 
-            if(game_data[i][j].sign == 'X')
+            if(game_data[i][j]->sign == 'X')
                 horizontal_counter++;
         }
 
@@ -33,10 +34,10 @@ int check_for_win(coordinates *data)
 
     for(int i=0; i<size; i++)
     {
-        if(game_data[i][i].sign == 'X')
+        if(game_data[i][i]->sign == 'X')
             left_diagonal++;
 
-        if(game_data[size-i-1][i].sign == 'X')
+        if(game_data[size-i-1][i]->sign == 'X')
             right_diagonal++;
 
     }
@@ -48,7 +49,77 @@ int check_for_win(coordinates *data)
 
 }
 
+void set_on_bottom(int column, coordinates *data)
+{
+    game_data[size-1][column]->sign = 'X';
+    gtk_button_set_label(GTK_BUTTON(buttons[size-1][column]), "X");
+}
 
+void set_on_top(int column, coordinates *data)
+{
+    int i=0;
+    while(game_data[i+1][column]->sign == ' ')
+        i++;
+
+
+    game_data[i][column]->sign = 'X';
+    gtk_button_set_label(GTK_BUTTON(buttons[i][column]), "X");
+}
+
+
+/*
+ * if any segfaults are to happen
+ * it's gonna be somwhere 'round here
+ * since I'm not sure whether the complex_move() works for full column
+ */
+void complex_move(int column, coordinates *data)
+{
+//remove the lowest sign, no need to check since the function conditions
+    char buff = game_data[size-1][column]->sign;
+
+    gchar *str;
+//move the whole column;
+    for(int i=size-1; i>0; i--)
+    {
+        str = g_strdup_printf("%c", game_data[i - 1][column]->sign);
+        gtk_button_set_label(GTK_BUTTON(buttons[i][column]), str);
+        game_data[i][column]->sign = game_data[i - 1][column]->sign;
+    }
+
+//put the removed sign on top of moved column
+    if(game_data[size-1][column]->sign == ' ')
+    {
+        game_data[size-1][column]->sign = buff;
+        //game_data[top][column]->sign = buff;
+        str = g_strdup_printf("%c", buff);
+        gtk_button_set_label(GTK_BUTTON(buttons[size-1][column]), str);
+
+        //put your own sign on top of the column
+        game_data[size-2][column]->sign = 'X';
+        str = g_strdup_printf("%c", 'X');
+        gtk_button_set_label(GTK_BUTTON(buttons[size-2][column]), str);
+
+    } else
+    {
+        //enters only if there is just one sign in column
+        int top=0;
+        while(game_data[top+1][column]->sign == ' ')
+            top++;
+
+        game_data[top][column]->sign = buff;
+        str = g_strdup_printf("%c", buff);
+        gtk_button_set_label(GTK_BUTTON(buttons[top][column]), str);
+
+        //put your own sign on top of the column
+        game_data[top-1][column]->sign = 'X';
+        str = g_strdup_printf("%c", 'X');
+        gtk_button_set_label(GTK_BUTTON(buttons[top-1][column]), str);
+    }
+
+
+
+    free(str);
+}
 
 int click_parser(GtkWidget *widget, gpointer user_data)
 {
@@ -59,15 +130,30 @@ int click_parser(GtkWidget *widget, gpointer user_data)
 
     //gchar *str = g_strdup_printf("%d %d", x_pos, y_pos);
 
-    GtkButton *clicked = data->clicked_button;
-    //gtk_button_set_label(GTK_BUTTON(clicked), "X");
+    GtkWidget *clicked = data->clicked_button;
 
 
-    if(data->sign == ' ')
+    if(game_data[size-1][x_pos]->sign == ' ')
     {
-        gtk_button_set_label(GTK_BUTTON(clicked), "X");
-        game_data[y_pos][x_pos].sign = 'X';
+        set_on_bottom(x_pos, data);
+        check_for_win(data);
+
+    } else if(game_data[y_pos][x_pos]->sign == ' ')
+    {
+        set_on_top(x_pos, data);
+        check_for_win(data);
+    } else
+    {
+        complex_move(x_pos, data);
         check_for_win(data);
     }
 
+/*
+    if(data->sign == ' ')
+    {
+        gtk_button_set_label(GTK_BUTTON(clicked), "X");
+        game_data[y_pos][x_pos]->sign = 'X';
+        check_for_win(data);
+    }
+*/
 }

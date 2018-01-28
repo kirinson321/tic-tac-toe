@@ -6,14 +6,16 @@
 #include <stdlib.h>
 #include "tic_tac_toe.h"
 
-field game_data[4][4];
+field *game_data[4][4];
+GtkWidget *buttons[4][4];
+
 
 void create_grid()
 {
     GtkWidget *label;
     gchar *str;
-    GtkWidget *buttons[size][size];
-    GtkWidget *function_button;
+
+//    GtkWidget *function_button;
 
     GtkWidget *position;
     position = gtk_label_new("test");
@@ -36,7 +38,8 @@ void create_grid()
 
         for(int j=0; j<size; j++)
         {
-            game_data[i][j].sign = ' ';
+            game_data[i][j]= malloc(sizeof(game_data));
+            game_data[i][j]->sign = ' ';
 
             buttons[i][j] = gtk_button_new_with_label(" ");
 
@@ -54,13 +57,13 @@ void create_grid()
     }
 
     free(str);
-
+/*
     function_button = gtk_button_new_with_label("A");
     gtk_grid_attach(GTK_GRID(grid), function_button, 1, size+1, 2, 1);
 
     function_button = gtk_button_new_with_label("B");
     gtk_grid_attach(GTK_GRID(grid), function_button, 3, size+1, 2, 1);
-
+*/
 
     return;
 }

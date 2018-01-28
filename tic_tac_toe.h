@@ -13,7 +13,7 @@ typedef struct
     int x;
     int y;
     char sign;
-    GtkButton *clicked_button;
+    GtkWidget *clicked_button;
 
     //GtkWidget *test_label;
 
@@ -29,12 +29,20 @@ typedef struct
 
 
 extern GtkWidget *grid;
-extern field game_data[4][4];
+extern GtkWidget *buttons[4][4];
 extern int size;
+extern field *game_data[4][4];
+//extern coordinates **array;
+
 
 void create_grid();
 int check_for_win(coordinates *data);
+void set_on_bottom(int , coordinates *data);
+void set_on_top(int column, coordinates *data);
+void complex_move(int column, coordinates *data);
 int click_parser(GtkWidget *widget, gpointer click_data);
+
+
 
 /*
  * first, an A or B function should be called
