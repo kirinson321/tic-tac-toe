@@ -16,10 +16,10 @@ int check_for_win(coordinates *data)
     {
         for(int j=0; j<size; j++)
         {
-            if(game_data[j][i]->sign == 'X')
+            if(game_data[j][i]->sign == player_indicator)
                 vertical_counter++;
 
-            if(game_data[i][j]->sign == 'X')
+            if(game_data[i][j]->sign == player_indicator)
                 horizontal_counter++;
         }
 
@@ -34,10 +34,10 @@ int check_for_win(coordinates *data)
 
     for(int i=0; i<size; i++)
     {
-        if(game_data[i][i]->sign == 'X')
+        if(game_data[i][i]->sign == player_indicator)
             left_diagonal++;
 
-        if(game_data[size-i-1][i]->sign == 'X')
+        if(game_data[size-i-1][i]->sign == player_indicator)
             right_diagonal++;
 
     }
@@ -51,8 +51,10 @@ int check_for_win(coordinates *data)
 
 void set_on_bottom(int column, coordinates *data)
 {
-    game_data[size-1][column]->sign = 'X';
-    gtk_button_set_label(GTK_BUTTON(buttons[size-1][column]), "X");
+    game_data[size-1][column]->sign = player_indicator;
+    char *str = g_strdup_printf("%c", player_indicator);
+    gtk_button_set_label(GTK_BUTTON(buttons[size-1][column]), str);
+    free(str);
 }
 
 void set_on_top(int column, coordinates *data)
@@ -62,8 +64,10 @@ void set_on_top(int column, coordinates *data)
         i++;
 
 
-    game_data[i][column]->sign = 'X';
-    gtk_button_set_label(GTK_BUTTON(buttons[i][column]), "X");
+    game_data[i][column]->sign = player_indicator;
+    char *str = g_strdup_printf("%c", player_indicator);
+    gtk_button_set_label(GTK_BUTTON(buttons[i][column]), str);
+    free(str);
 }
 
 
@@ -95,8 +99,8 @@ void complex_move(int column, coordinates *data)
         gtk_button_set_label(GTK_BUTTON(buttons[size-1][column]), str);
 
         //put your own sign on top of the column
-        game_data[size-2][column]->sign = 'X';
-        str = g_strdup_printf("%c", 'X');
+        game_data[size-2][column]->sign = player_indicator;
+        str = g_strdup_printf("%c", player_indicator);
         gtk_button_set_label(GTK_BUTTON(buttons[size-2][column]), str);
 
     } else
@@ -111,8 +115,8 @@ void complex_move(int column, coordinates *data)
         gtk_button_set_label(GTK_BUTTON(buttons[top][column]), str);
 
         //put your own sign on top of the column
-        game_data[top-1][column]->sign = 'X';
-        str = g_strdup_printf("%c", 'X');
+        game_data[top-1][column]->sign = player_indicator;
+        str = g_strdup_printf("%c", player_indicator);
         gtk_button_set_label(GTK_BUTTON(buttons[top-1][column]), str);
     }
 

@@ -15,8 +15,6 @@ typedef struct
     char sign;
     GtkWidget *clicked_button;
 
-    //GtkWidget *test_label;
-
 } coordinates;
 
 typedef struct
@@ -27,12 +25,11 @@ typedef struct
 
 } field;
 
-
 extern GtkWidget *grid;
 extern GtkWidget *buttons[4][4];
 extern int size;
 extern field *game_data[4][4];
-//extern coordinates **array;
+extern char player_indicator;
 
 
 void create_grid();
@@ -41,13 +38,6 @@ void set_on_bottom(int , coordinates *data);
 void set_on_top(int column, coordinates *data);
 void complex_move(int column, coordinates *data);
 int click_parser(GtkWidget *widget, gpointer click_data);
-
-
-
-/*
- * first, an A or B function should be called
- * then, this function should wait for data with button position;
- */
-
+void pokazBlad(char *komunikat);
 
 #endif //TIC_TAC_TOE_TIC_TAC_TOE_H
