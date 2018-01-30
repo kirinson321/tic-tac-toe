@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include "tic_tac_toe.h"
 
-field *game_data[4][4];
-GtkWidget *buttons[4][4];
+field *game_data[11][11];
+GtkWidget *buttons[11][11];
 
 
 void create_grid()

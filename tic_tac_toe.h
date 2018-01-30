@@ -26,18 +26,18 @@ typedef struct
 } field;
 
 extern GtkWidget *grid;
-extern GtkWidget *buttons[4][4];
+extern GtkWidget *buttons[11][11];
 extern int size;
-extern field *game_data[4][4];
+extern field *game_data[11][11];
 extern char player_indicator;
 
 
 void create_grid();
-int check_for_win(coordinates *data);
+void check_for_win(coordinates *data);
 void set_on_bottom(int , coordinates *data);
 void set_on_top(int column, coordinates *data);
 void complex_move(int column, coordinates *data);
-int click_parser(GtkWidget *widget, gpointer click_data);
+void click_parser(GtkWidget *widget, gpointer click_data);
 void pokazBlad(char *komunikat);
 
 #endif //TIC_TAC_TOE_TIC_TAC_TOE_H

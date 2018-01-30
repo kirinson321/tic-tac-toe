@@ -5,7 +5,10 @@
 #include <stdlib.h>
 #include "tic_tac_toe.h"
 
-int check_for_win(coordinates *data)
+//pass_game_data()
+
+
+void check_for_win(coordinates *data)
 {
     int vertical_counter = 0;
     int horizontal_counter = 0;
@@ -25,7 +28,10 @@ int check_for_win(coordinates *data)
 
         if(horizontal_counter == size || vertical_counter == size)
         {
-            gtk_button_set_label(GTK_BUTTON(data->clicked_button), "DUPA");
+            char *message;
+            message = g_strdup_printf("Wygrywa gracz %c!", player_indicator);
+            pokazBlad(message);
+            gtk_main_quit();
         }
 
         vertical_counter = 0;
@@ -44,7 +50,10 @@ int check_for_win(coordinates *data)
 
     if(left_diagonal == size || right_diagonal == size)
     {
-        gtk_button_set_label(GTK_BUTTON(data->clicked_button), "DUPA");
+        char *message;
+        message = g_strdup_printf("Wygrywa gracz %c!", player_indicator);
+        pokazBlad(message);
+        gtk_main_quit();
     }
 
 }
@@ -54,6 +63,7 @@ void set_on_bottom(int column, coordinates *data)
     game_data[size-1][column]->sign = player_indicator;
     char *str = g_strdup_printf("%c", player_indicator);
     gtk_button_set_label(GTK_BUTTON(buttons[size-1][column]), str);
+    //pass_game_data();
     free(str);
 }
 
@@ -125,7 +135,7 @@ void complex_move(int column, coordinates *data)
     free(str);
 }
 
-int click_parser(GtkWidget *widget, gpointer user_data)
+void click_parser(GtkWidget *widget, gpointer user_data)
 {
     coordinates *data = user_data;
 
@@ -134,7 +144,7 @@ int click_parser(GtkWidget *widget, gpointer user_data)
 
     //gchar *str = g_strdup_printf("%d %d", x_pos, y_pos);
 
-    GtkWidget *clicked = data->clicked_button;
+    //GtkWidget *clicked = data->clicked_button;
 
 
     if(game_data[size-1][x_pos]->sign == ' ')
