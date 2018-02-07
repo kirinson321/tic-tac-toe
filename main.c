@@ -11,10 +11,12 @@ GtkWidget *grid;
 int size;
 char player_indicator;
 
-//
-void pokazBlad(char *komunikat);
+static void kill_process()
+{
+    gtk_main_quit();
+}
 
-//
+
 
 int main(int argc, char *argv[])
 {
@@ -36,6 +38,7 @@ int main(int argc, char *argv[])
 
         grid = gtk_grid_new();
         gtk_container_add(GTK_CONTAINER(window), grid);
+        g_signal_connect(G_OBJECT(window), "destroy",G_CALLBACK(kill_process), NULL);
 
         create_grid();
 

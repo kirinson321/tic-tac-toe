@@ -3,7 +3,7 @@ project(tic_tac_toe C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(tic_tac_toe main.c tic_tac_toe.h board_drawing.c game_logic.c)
+add_executable(tic_tac_toe main.c tic_tac_toe.h board_drawing.c game_logic.c communication.c)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)

@@ -7,6 +7,8 @@
 #define TIC_TAC_TOE_TIC_TAC_TOE_H
 
 #include <gtk/gtk.h>
+#include <stdbool.h>
+#include <stddef.h>
 
 typedef struct
 {
@@ -39,5 +41,14 @@ void set_on_top(int column, coordinates *data);
 void complex_move(int column, coordinates *data);
 void click_parser(GtkWidget *widget, gpointer click_data);
 void pokazBlad(char *komunikat);
+
+//communication
+typedef struct pipes *PipesPtr;
+
+PipesPtr initPipes(int argc, char *argv[]);
+void     sendStringToPipe(PipesPtr channel, const char *data);
+bool     getStringFromPipe(PipesPtr channel, char *buffer, size_t size);
+void     closePipes(PipesPtr channel);
+
 
 #endif //TIC_TAC_TOE_TIC_TAC_TOE_H
