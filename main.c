@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
         //GtkWidget *dater = gtk_button_new_with_label("send data");
         //g_signal_connect(G_OBJECT(dater), "clicked", G_CALLBACK(send_data), NULL);
         //gtk_grid_attach(GTK_GRID(grid), dater, 1, 10, 1, 1);
-        //g_timeout_add(100, update_data, NULL);
+        g_timeout_add(100, update_data, NULL);
 
         gtk_widget_show_all(window);
         gtk_main();

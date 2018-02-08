@@ -10,8 +10,8 @@ void send_data()
 {
     gchar output[(size*size)+2];
 
-    output[0] = player_indicator;
-    int k=1;
+    //output[0] = player_indicator;
+    int k=0;
     for(int i=0; i<size; i++)
     {
         for(int j=0; j<size; j++)
@@ -34,7 +34,7 @@ gboolean update_data(gpointer data)
         int i=0;
         int j=0;
 
-        for(int k=1; k<size*size; k++)
+        for(int k=0; k<size*size; k++)
         {
             if(j==size)
             {
