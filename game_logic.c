@@ -5,7 +5,24 @@
 #include <stdlib.h>
 #include "tic_tac_toe.h"
 
-//pass_game_data()
+
+static void send_data()
+{
+    char output[(10*10)+2];
+
+    output[0] = player_indicator;
+    int k=1;
+    for(int i=0; i<size; i++)
+    {
+        for(int j=0; j<size; j++)
+        {
+            output[k] = game_data[i][j]->sign;
+            k++;
+        }
+    }
+
+    sendStringToPipe(potoki, output);
+}
 
 
 void check_for_win(coordinates *data)
@@ -150,15 +167,18 @@ void click_parser(GtkWidget *widget, gpointer user_data)
     if(game_data[size-1][x_pos]->sign == ' ')
     {
         set_on_bottom(x_pos, data);
+        send_data();
         check_for_win(data);
 
     } else if(game_data[y_pos][x_pos]->sign == ' ')
     {
         set_on_top(x_pos, data);
+        send_data();
         check_for_win(data);
     } else
     {
         complex_move(x_pos, data);
+        send_data();
         check_for_win(data);
     }
 

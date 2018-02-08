@@ -10,9 +10,11 @@ GtkWidget *window;
 GtkWidget *grid;
 int size;
 char player_indicator;
+PipesPtr potoki;
 
 static void kill_process()
 {
+    closePipes(potoki);
     gtk_main_quit();
 }
 
@@ -26,6 +28,9 @@ int main(int argc, char *argv[])
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_container_set_border_width(GTK_CONTAINER(window), 60);
 
+    if((potoki = initPipes(argc, argv)) == NULL)
+        return 1;
+
     if(argc<3)
     {
         pokazBlad("Za mało argumentów - argument pierwszy to symbol gracza, drugi to rozmiar planszy");
@@ -34,7 +39,6 @@ int main(int argc, char *argv[])
     {
         player_indicator = *argv[1];
         size = atoi(argv[2]);
-
 
         grid = gtk_grid_new();
         gtk_container_add(GTK_CONTAINER(window), grid);
