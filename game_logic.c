@@ -5,13 +5,15 @@
 #include <stdlib.h>
 #include "tic_tac_toe.h"
 
+char this_player_turn = '1';
 
 void send_data()
 {
     gchar output[(size*size)+2];
 
-    //output[0] = player_indicator;
-    int k=0;
+    output[0] = this_player_turn;
+    this_player_turn = '0';
+    int k=1;
     for(int i=0; i<size; i++)
     {
         for(int j=0; j<size; j++)
@@ -28,12 +30,15 @@ gboolean update_data(gpointer data)
 {
     gchar input[(size*size)+2];
     int input_size = size*size+2;
+
     if(getStringFromPipe(potoki, input, input_size))
     {
         int i=0;
         int j=0;
 
-        for(int k=0; k<size*size; k++)
+        this_player_turn = input[0];
+
+        for(int k=1; k<=size*size; k++)
         {
             if(j==size)
             {
@@ -216,6 +221,11 @@ void click_parser(GtkWidget *widget, gpointer user_data)
 
     //GtkWidget *clicked = data->clicked_button;
 
+    if(this_player_turn=='0')
+    {
+        pokazBlad("Teraz trwa tura drugiego gracza");
+        return;
+    }
 
     if(game_data[size-1][x_pos]->sign == 'E')
     {

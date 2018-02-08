@@ -32,6 +32,7 @@ extern GtkWidget *buttons[11][11];
 extern int size;
 extern field *game_data[11][11];
 extern char player_indicator;
+extern char this_player_turn;
 
 void create_grid();
 //gboolean check_for_win(gpointer data);
