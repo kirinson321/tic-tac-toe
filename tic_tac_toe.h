@@ -35,7 +35,6 @@ extern char player_indicator;
 extern char this_player_turn;
 
 void create_grid();
-//gboolean check_for_win(gpointer data);
 void set_on_bottom(int , coordinates *data);
 void set_on_top(int column, coordinates *data);
 void complex_move(int column, coordinates *data);

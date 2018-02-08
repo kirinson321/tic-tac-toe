@@ -84,6 +84,5 @@ bool getStringFromPipe(PipesPtr pipes, char *buffer, size_t size)
 {
     char *result = fgets(buffer,size,pipes->fifo_in);
     fflush(pipes->fifo_in);
-    //if (result == NULL) pokazBlad("Failed to read data");
     return result != NULL;
 }

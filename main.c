@@ -5,6 +5,7 @@
 
 #include <gtk/gtk.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "tic_tac_toe.h"
 GtkWidget *window;
 GtkWidget *grid;
@@ -17,6 +18,8 @@ PipesPtr potoki;
 void kill_process()
 {
     closePipes(potoki);
+    unlink("AtoB");
+    unlink("BtoA");
     gtk_main_quit();
 }
 
@@ -99,21 +102,6 @@ int main(int argc, char *argv[])
 
         create_grid();
 
-        // testing new functionalities here
-
-        //debugger will be used to display debug messages;
-        //should write a new function to change its message when a button is pressed
-//    char *str;
-//    str = g_strdup_printf("%c", player_indicator);
-//    //str = player_indicator;
-//GtkWidget *debugger = gtk_label_new(str);
-//    gtk_grid_attach(GTK_GRID(grid), debugger, 1, 10, 1, 1);
-//    //pokazBlad("test");
-        //
-
-        //GtkWidget *dater = gtk_button_new_with_label("send data");
-        //g_signal_connect(G_OBJECT(dater), "clicked", G_CALLBACK(send_data), NULL);
-        //gtk_grid_attach(GTK_GRID(grid), dater, 1, 10, 1, 1);
         g_timeout_add(100, update_data, NULL);
         g_timeout_add(500, win_loop, NULL);
 

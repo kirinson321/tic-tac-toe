@@ -12,7 +12,7 @@ static bool segfault_protector(int column)
     int counter=0;
     for(int i=0; i<size; i++)
     {
-        if(game_data[i][column]->sign!='E')
+        if(game_data[i][column]->sign!=' ')
         {
             counter++;
         }
@@ -77,8 +77,8 @@ gboolean update_data(gpointer data)
 
 gboolean win_loop(gpointer data)
 {
-    bool first = check_for_win('A');
-    bool second = check_for_win('B');
+    bool first = check_for_win('X');
+    bool second = check_for_win('O');
 
     if(first==true && second==true)
     {
@@ -97,7 +97,7 @@ gboolean win_loop(gpointer data)
     return TRUE;
 }
 
-bool check_for_win(char player_indicator)
+bool check_for_win(char player)
 {
     int vertical_counter = 0;
     int horizontal_counter = 0;
@@ -108,21 +108,16 @@ bool check_for_win(char player_indicator)
     {
         for(int j=0; j<size; j++)
         {
-            if(game_data[j][i]->sign == player_indicator)
+            if(game_data[j][i]->sign == player)
                 vertical_counter++;
 
-            if(game_data[i][j]->sign == player_indicator)
+            if(game_data[i][j]->sign == player)
                 horizontal_counter++;
         }
 
         if(horizontal_counter == size || vertical_counter == size)
-        {
             return true;
-//            char *message;
-//            message = g_strdup_printf("Wygrywa gracz %c!", player_indicator);
-//            pokazBlad(message);
-//            gtk_main_quit();
-        }
+
 
         vertical_counter = 0;
         horizontal_counter = 0;
@@ -130,22 +125,16 @@ bool check_for_win(char player_indicator)
 
     for(int i=0; i<size; i++)
     {
-        if(game_data[i][i]->sign == player_indicator)
+        if(game_data[i][i]->sign == player)
             left_diagonal++;
 
-        if(game_data[size-i-1][i]->sign == player_indicator)
+        if(game_data[size-i-1][i]->sign == player)
             right_diagonal++;
 
     }
 
     if(left_diagonal == size || right_diagonal == size)
-    {
         return true;
-//        char *message;
-//        message = g_strdup_printf("Wygrywa gracz %c!", player_indicator);
-//        pokazBlad(message);
-//        gtk_main_quit();
-    }
 
     return false;
 }
@@ -155,7 +144,6 @@ void set_on_bottom(int column, coordinates *data)
     game_data[size-1][column]->sign = player_indicator;
     char *str = g_strdup_printf("%c", player_indicator);
     gtk_button_set_label(GTK_BUTTON(buttons[size-1][column]), str);
-    //pass_game_data();
     segfault_protection[column]++;
     free(str);
 }
@@ -163,9 +151,8 @@ void set_on_bottom(int column, coordinates *data)
 void set_on_top(int column, coordinates *data)
 {
     int i=0;
-    while(game_data[i+1][column]->sign == 'E')
+    while(game_data[i+1][column]->sign == ' ')
         i++;
-
 
     game_data[i][column]->sign = player_indicator;
     char *str = g_strdup_printf("%c", player_indicator);
@@ -174,12 +161,6 @@ void set_on_top(int column, coordinates *data)
     free(str);
 }
 
-
-/*
- * if any segfaults are to happen
- * it's gonna be somwhere 'round here
- * since I'm not sure whether the complex_move() works for full column
- */
 void complex_move(int column, coordinates *data)
 {
 //remove the lowest sign, no need to check since the function conditions
@@ -195,7 +176,7 @@ void complex_move(int column, coordinates *data)
     }
 
 //put the removed sign on top of moved column
-    if(game_data[size-1][column]->sign == 'E')
+    if(game_data[size-1][column]->sign == ' ')
     {
         game_data[size-1][column]->sign = buff;
         //game_data[top][column]->sign = buff;
@@ -211,7 +192,7 @@ void complex_move(int column, coordinates *data)
     {
         //enters only if there is just one sign in column
         int top=0;
-        while(game_data[top+1][column]->sign == 'E')
+        while(game_data[top+1][column]->sign == ' ')
             top++;
 
         game_data[top][column]->sign = buff;
@@ -235,17 +216,13 @@ void click_parser(GtkWidget *widget, gpointer user_data)
     gint x_pos = data->x;
     gint y_pos = data->y;
 
-    //gchar *str = g_strdup_printf("%d %d", x_pos, y_pos);
-
-    //GtkWidget *clicked = data->clicked_button;
-
     if(this_player_turn=='0')
     {
         pokazBlad("Teraz trwa tura drugiego gracza");
         return;
     }
 
-    if(game_data[size-1][x_pos]->sign == 'E')
+    if(game_data[size-1][x_pos]->sign == ' ')
     {
         if(segfault_protector(x_pos) == false)
             set_on_bottom(x_pos, data);
@@ -254,9 +231,8 @@ void click_parser(GtkWidget *widget, gpointer user_data)
             pokazBlad("Nie mozesz wykonac tego ruchu");
             return;
         }
-        //check_for_win(data);
 
-    } else if(game_data[y_pos][x_pos]->sign == 'E')
+    } else if(game_data[y_pos][x_pos]->sign == ' ')
     {
         if(segfault_protector(x_pos) == false)
             set_on_top(x_pos, data);
@@ -265,7 +241,7 @@ void click_parser(GtkWidget *widget, gpointer user_data)
             pokazBlad("Nie mozesz wykonac tego ruchu");
             return;
         }
-        //check_for_win(data);
+
     } else
     {
         if(segfault_protector(x_pos) == false)
@@ -275,17 +251,9 @@ void click_parser(GtkWidget *widget, gpointer user_data)
             pokazBlad("Nie mozesz wykonac tego ruchu");
             return;
         }
-        //check_for_win(data);
+
     }
 
     send_data();
 
-/*
-    if(data->sign == ' ')
-    {
-        gtk_button_set_label(GTK_BUTTON(clicked), "X");
-        game_data[y_pos][x_pos]->sign = 'X';
-        check_for_win(data);
-    }
-*/
 }
