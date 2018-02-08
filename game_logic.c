@@ -24,7 +24,6 @@ void send_data()
     sendStringToPipe(potoki, output);
 }
 
-
 gboolean update_data(gpointer data)
 {
     gchar input[(size*size)+2];
@@ -53,7 +52,30 @@ gboolean update_data(gpointer data)
     return TRUE;
 }
 
-void check_for_win(coordinates *data)
+
+gboolean win_loop(gpointer data)
+{
+    bool first = check_for_win('A');
+    bool second = check_for_win('B');
+
+    if(first==true && second==true)
+    {
+        pokazBlad("Remis");
+        kill_process();
+    } else if(first == true)
+    {
+        pokazBlad("Wygrywa gracz A");
+        kill_process();
+    } else if(second == true)
+    {
+        pokazBlad("Wygrywa gracz B");
+        kill_process();
+    }
+
+    return TRUE;
+}
+
+bool check_for_win(char player_indicator)
 {
     int vertical_counter = 0;
     int horizontal_counter = 0;
@@ -73,10 +95,11 @@ void check_for_win(coordinates *data)
 
         if(horizontal_counter == size || vertical_counter == size)
         {
-            char *message;
-            message = g_strdup_printf("Wygrywa gracz %c!", player_indicator);
-            pokazBlad(message);
-            gtk_main_quit();
+            return true;
+//            char *message;
+//            message = g_strdup_printf("Wygrywa gracz %c!", player_indicator);
+//            pokazBlad(message);
+//            gtk_main_quit();
         }
 
         vertical_counter = 0;
@@ -95,12 +118,14 @@ void check_for_win(coordinates *data)
 
     if(left_diagonal == size || right_diagonal == size)
     {
-        char *message;
-        message = g_strdup_printf("Wygrywa gracz %c!", player_indicator);
-        pokazBlad(message);
-        gtk_main_quit();
+        return true;
+//        char *message;
+//        message = g_strdup_printf("Wygrywa gracz %c!", player_indicator);
+//        pokazBlad(message);
+//        gtk_main_quit();
     }
 
+    return false;
 }
 
 void set_on_bottom(int column, coordinates *data)
@@ -195,16 +220,16 @@ void click_parser(GtkWidget *widget, gpointer user_data)
     if(game_data[size-1][x_pos]->sign == 'E')
     {
         set_on_bottom(x_pos, data);
-        check_for_win(data);
+        //check_for_win(data);
 
     } else if(game_data[y_pos][x_pos]->sign == 'E')
     {
         set_on_top(x_pos, data);
-        check_for_win(data);
+        //check_for_win(data);
     } else
     {
         complex_move(x_pos, data);
-        check_for_win(data);
+        //check_for_win(data);
     }
 
     send_data();

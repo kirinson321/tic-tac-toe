@@ -34,13 +34,16 @@ extern field *game_data[11][11];
 extern char player_indicator;
 
 void create_grid();
-void check_for_win(coordinates *data);
+//gboolean check_for_win(gpointer data);
 void set_on_bottom(int , coordinates *data);
 void set_on_top(int column, coordinates *data);
 void complex_move(int column, coordinates *data);
 void click_parser(GtkWidget *widget, gpointer click_data);
 void pokazBlad(char *komunikat);
 void board_update();
+void kill_process();
+gboolean win_loop(gpointer data);
+bool check_for_win(char player_indicator);
 
 //communication
 typedef struct pipes *PipesPtr;
