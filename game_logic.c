@@ -6,9 +6,9 @@
 #include "tic_tac_toe.h"
 
 
-static void send_data()
+void send_data()
 {
-    char output[(10*10)+2];
+    gchar output[(size*size)+2];
 
     output[0] = player_indicator;
     int k=1;
@@ -20,10 +20,38 @@ static void send_data()
             k++;
         }
     }
-
+    output[k] = '\0';
     sendStringToPipe(potoki, output);
 }
 
+
+gboolean update_data(gpointer data)
+{
+    gchar input[(size*size)+2];
+    int input_size = size*size+2;
+    if(getStringFromPipe(potoki, input, input_size))
+    {
+        int i=0;
+        int j=0;
+
+        for(int k=1; k<size*size; k++)
+        {
+            if(j==size)
+            {
+                j=0;
+                i++;
+                printf("\n");
+            }
+
+            game_data[i][j]->sign = input[k];
+            printf("%c", game_data[i][j]->sign);
+            j++;
+        }
+        board_update();
+    }
+
+    return TRUE;
+}
 
 void check_for_win(coordinates *data)
 {
@@ -87,7 +115,7 @@ void set_on_bottom(int column, coordinates *data)
 void set_on_top(int column, coordinates *data)
 {
     int i=0;
-    while(game_data[i+1][column]->sign == ' ')
+    while(game_data[i+1][column]->sign == 'E')
         i++;
 
 
@@ -118,7 +146,7 @@ void complex_move(int column, coordinates *data)
     }
 
 //put the removed sign on top of moved column
-    if(game_data[size-1][column]->sign == ' ')
+    if(game_data[size-1][column]->sign == 'E')
     {
         game_data[size-1][column]->sign = buff;
         //game_data[top][column]->sign = buff;
@@ -134,7 +162,7 @@ void complex_move(int column, coordinates *data)
     {
         //enters only if there is just one sign in column
         int top=0;
-        while(game_data[top+1][column]->sign == ' ')
+        while(game_data[top+1][column]->sign == 'E')
             top++;
 
         game_data[top][column]->sign = buff;
@@ -164,23 +192,22 @@ void click_parser(GtkWidget *widget, gpointer user_data)
     //GtkWidget *clicked = data->clicked_button;
 
 
-    if(game_data[size-1][x_pos]->sign == ' ')
+    if(game_data[size-1][x_pos]->sign == 'E')
     {
         set_on_bottom(x_pos, data);
-        send_data();
         check_for_win(data);
 
-    } else if(game_data[y_pos][x_pos]->sign == ' ')
+    } else if(game_data[y_pos][x_pos]->sign == 'E')
     {
         set_on_top(x_pos, data);
-        send_data();
         check_for_win(data);
     } else
     {
         complex_move(x_pos, data);
-        send_data();
         check_for_win(data);
     }
+
+    send_data();
 
 /*
     if(data->sign == ' ')

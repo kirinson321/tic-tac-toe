@@ -17,9 +17,9 @@ void create_grid()
 
 //    GtkWidget *function_button;
 
-    GtkWidget *position;
-    position = gtk_label_new("test");
-    gtk_grid_attach(GTK_GRID(grid), position, 1, 7, 2, 1);
+    //GtkWidget *position;
+    //position = gtk_label_new("test");
+    //gtk_grid_attach(GTK_GRID(grid), position, 1, 7, 2, 1);
 
     coordinates **array = malloc(size * sizeof(coordinates));
 
@@ -39,7 +39,7 @@ void create_grid()
         for(int j=0; j<size; j++)
         {
             game_data[i][j]= malloc(sizeof(game_data));
-            game_data[i][j]->sign = ' ';
+            game_data[i][j]->sign = 'E';
 
             buttons[i][j] = gtk_button_new_with_label(" ");
 
@@ -66,4 +66,22 @@ void create_grid()
 */
 
     return;
+}
+
+
+void board_update()
+{
+    for(int i=0; i<size; i++)
+    {
+        for(int j=0; j<size; j++)
+        {
+            if(game_data[i][j]->sign == 'A')
+                gtk_button_set_label(GTK_BUTTON(buttons[i][j]), "A");
+            else if(game_data[i][j]->sign =='B')
+                gtk_button_set_label(GTK_BUTTON(buttons[i][j]), "B");
+            else
+                gtk_button_set_label(GTK_BUTTON(buttons[i][j]), " ");
+        }
+
+    }
 }

@@ -40,9 +40,12 @@ void set_on_top(int column, coordinates *data);
 void complex_move(int column, coordinates *data);
 void click_parser(GtkWidget *widget, gpointer click_data);
 void pokazBlad(char *komunikat);
+void board_update();
 
 //communication
 typedef struct pipes *PipesPtr;
+void send_data();
+gboolean update_data(gpointer data);
 
 PipesPtr initPipes(int argc, char *argv[]);
 void     sendStringToPipe(PipesPtr channel, const char *data);

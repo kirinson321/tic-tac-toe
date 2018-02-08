@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
 {
     gtk_init(&argc, &argv);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Kółko i krzyżyk");
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_container_set_border_width(GTK_CONTAINER(window), 60);
 
@@ -40,6 +39,10 @@ int main(int argc, char *argv[])
         player_indicator = *argv[1];
         size = atoi(argv[2]);
 
+        gchar title[50];
+        sprintf(title, "Kółko i krzyżyk - gracz %c", player_indicator);
+        gtk_window_set_title(GTK_WINDOW(window), title);
+
         grid = gtk_grid_new();
         gtk_container_add(GTK_CONTAINER(window), grid);
         g_signal_connect(G_OBJECT(window), "destroy",G_CALLBACK(kill_process), NULL);
@@ -53,13 +56,17 @@ int main(int argc, char *argv[])
 //    char *str;
 //    str = g_strdup_printf("%c", player_indicator);
 //    //str = player_indicator;
-//    GtkWidget *debugger = gtk_label_new(str);
+//GtkWidget *debugger = gtk_label_new(str);
 //    gtk_grid_attach(GTK_GRID(grid), debugger, 1, 10, 1, 1);
 //    //pokazBlad("test");
         //
 
-        gtk_widget_show_all(window);
+        //GtkWidget *dater = gtk_button_new_with_label("send data");
+        //g_signal_connect(G_OBJECT(dater), "clicked", G_CALLBACK(send_data), NULL);
+        //gtk_grid_attach(GTK_GRID(grid), dater, 1, 10, 1, 1);
+        //g_timeout_add(100, update_data, NULL);
 
+        gtk_widget_show_all(window);
         gtk_main();
 
         return 0;
