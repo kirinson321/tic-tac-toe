@@ -30,14 +30,47 @@ int main(int argc, char *argv[])
     if((potoki = initPipes(argc, argv)) == NULL)
         return 1;
 
-    if(argc<3)
+    if(argc<3 && *argv[1] == 'A')
     {
-        pokazBlad("Za mało argumentów - argument pierwszy to symbol gracza, drugi to rozmiar planszy");
+        pokazBlad("Za mało argumentów - argument pierwszy to symbol gracza, drugi (okreslany TYLKO przez gracza A) to rozmiar planszy");
+        return 1;
+    } else if(argc<2)
+    {
+        pokazBlad("Za mało argumentów - podaj symbol 'B' ");
         return 1;
     } else
     {
+        if(argc==3 && argv[1][0]=='A')
+        {
+            size = atoi(argv[2]);
+        } else if(argc==3 && argv[1][0] != 'A')
+        {
+            pokazBlad("Tylko gracz A moze okreslic rozmiar planszy");
+            return 1;
+        }
+
         player_indicator = *argv[1];
-        size = atoi(argv[2]);
+
+        if(player_indicator=='A')
+        {
+            char *str;
+            str = g_strdup_printf("%d", size);
+            sendStringToPipe(potoki, str);
+        } else if(player_indicator=='B')
+        {
+            char *str;
+            str = g_strdup_printf("%s", "5");
+            if(getStringFromPipe(potoki, str, sizeof(int)))
+            {
+                size = atoi(str);
+            } else
+            {
+                pokazBlad("Najpierw swoja kopie gry powinien uruchomic gracz A");
+                return 1;
+            }
+
+        }
+
 
         gchar title[50];
         sprintf(title, "Kółko i krzyżyk - gracz %c", player_indicator);
