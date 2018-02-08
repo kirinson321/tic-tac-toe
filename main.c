@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
         if(argc==3 && argv[1][0]=='A')
         {
             size = atoi(argv[2]);
+            this_player_turn='0';
             if(size>9 || size<3)
             {
                 pokazBlad("Rozmiar powinien miescic sie w przedziale od 3 do 9 wlacznie");
