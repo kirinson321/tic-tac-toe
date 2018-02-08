@@ -51,10 +51,16 @@ int main(int argc, char *argv[])
         if(argc==3 && argv[1][0]=='A')
         {
             size = atoi(argv[2]);
+            if(size>9 || size<3)
+            {
+                pokazBlad("Rozmiar powinien miescic sie w przedziale od 3 do 9 wlacznie");
+                kill_process();
+                return 1;
+            }
         } else if(argc==3 && argv[1][0] != 'A')
         {
             pokazBlad("Tylko gracz A moze okreslic rozmiar planszy");
-            kill_process();
+            //kill_process();
             return 1;
         }
 
