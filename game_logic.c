@@ -7,6 +7,23 @@
 
 char this_player_turn = '1';
 
+static bool segfault_protector(int column)
+{
+    int counter=0;
+    for(int i=0; i<size; i++)
+    {
+        if(game_data[i][column]->sign!='E')
+        {
+            counter++;
+        }
+    }
+
+    if(counter == size)
+        return true;
+    return false;
+}
+
+
 void send_data()
 {
     gchar output[(size*size)+2];
@@ -139,6 +156,7 @@ void set_on_bottom(int column, coordinates *data)
     char *str = g_strdup_printf("%c", player_indicator);
     gtk_button_set_label(GTK_BUTTON(buttons[size-1][column]), str);
     //pass_game_data();
+    segfault_protection[column]++;
     free(str);
 }
 
@@ -152,6 +170,7 @@ void set_on_top(int column, coordinates *data)
     game_data[i][column]->sign = player_indicator;
     char *str = g_strdup_printf("%c", player_indicator);
     gtk_button_set_label(GTK_BUTTON(buttons[i][column]), str);
+    segfault_protection[column]++;
     free(str);
 }
 
@@ -205,8 +224,7 @@ void complex_move(int column, coordinates *data)
         gtk_button_set_label(GTK_BUTTON(buttons[top-1][column]), str);
     }
 
-
-
+    segfault_protection[column]++;
     free(str);
 }
 
@@ -229,16 +247,34 @@ void click_parser(GtkWidget *widget, gpointer user_data)
 
     if(game_data[size-1][x_pos]->sign == 'E')
     {
-        set_on_bottom(x_pos, data);
+        if(segfault_protector(x_pos) == false)
+            set_on_bottom(x_pos, data);
+        else
+        {
+            pokazBlad("Nie mozesz wykonac tego ruchu");
+            return;
+        }
         //check_for_win(data);
 
     } else if(game_data[y_pos][x_pos]->sign == 'E')
     {
-        set_on_top(x_pos, data);
+        if(segfault_protector(x_pos) == false)
+            set_on_top(x_pos, data);
+        else
+        {
+            pokazBlad("Nie mozesz wykonac tego ruchu");
+            return;
+        }
         //check_for_win(data);
     } else
     {
-        complex_move(x_pos, data);
+        if(segfault_protector(x_pos) == false)
+            complex_move(x_pos, data);
+        else
+        {
+            pokazBlad("Nie mozesz wykonac tego ruchu");
+            return;
+        }
         //check_for_win(data);
     }
 

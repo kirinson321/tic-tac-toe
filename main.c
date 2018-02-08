@@ -9,7 +9,9 @@
 GtkWidget *window;
 GtkWidget *grid;
 int size;
+int segfault_protection[11];
 char player_indicator;
+
 PipesPtr potoki;
 
 void kill_process()
@@ -26,6 +28,7 @@ int main(int argc, char *argv[])
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_container_set_border_width(GTK_CONTAINER(window), 60);
+    char player_sign;
 
     if((potoki = initPipes(argc, argv)) == NULL)
         return 1;
@@ -33,10 +36,12 @@ int main(int argc, char *argv[])
     if(argc<3 && *argv[1] == 'A')
     {
         pokazBlad("Za mało argumentów - argument pierwszy to symbol gracza, drugi (okreslany TYLKO przez gracza A) to rozmiar planszy");
+        kill_process();
         return 1;
     } else if(argc<2)
     {
         pokazBlad("Za mało argumentów - podaj symbol 'B' ");
+        kill_process();
         return 1;
     } else
     {
@@ -46,17 +51,24 @@ int main(int argc, char *argv[])
         } else if(argc==3 && argv[1][0] != 'A')
         {
             pokazBlad("Tylko gracz A moze okreslic rozmiar planszy");
+            kill_process();
             return 1;
         }
 
-        player_indicator = *argv[1];
+        player_sign= *argv[1];
+        if(player_sign == 'A')
+        {
+            player_indicator = 'X';
+        } else
+            player_indicator = 'O';
 
-        if(player_indicator=='A')
+
+        if(player_sign=='A')
         {
             char *str;
             str = g_strdup_printf("%d", size);
             sendStringToPipe(potoki, str);
-        } else if(player_indicator=='B')
+        } else if(player_sign=='B')
         {
             char *str;
             str = g_strdup_printf("%s", "5");
@@ -66,11 +78,16 @@ int main(int argc, char *argv[])
             } else
             {
                 pokazBlad("Najpierw swoja kopie gry powinien uruchomic gracz A");
+                kill_process();
                 return 1;
             }
 
         }
 
+        for(int i=0; i<size; i++)
+        {
+            segfault_protection[i]=0;
+        }
 
         gchar title[50];
         sprintf(title, "Kółko i krzyżyk - gracz %c", player_indicator);

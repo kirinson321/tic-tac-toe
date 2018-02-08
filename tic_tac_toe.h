@@ -43,6 +43,7 @@ void click_parser(GtkWidget *widget, gpointer click_data);
 void pokazBlad(char *komunikat);
 void board_update();
 void kill_process();
+extern int segfault_protection[11];
 gboolean win_loop(gpointer data);
 bool check_for_win(char player_indicator);
 

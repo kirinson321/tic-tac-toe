@@ -75,10 +75,10 @@ void board_update()
     {
         for(int j=0; j<size; j++)
         {
-            if(game_data[i][j]->sign == 'A')
-                gtk_button_set_label(GTK_BUTTON(buttons[i][j]), "A");
-            else if(game_data[i][j]->sign =='B')
-                gtk_button_set_label(GTK_BUTTON(buttons[i][j]), "B");
+            if(game_data[i][j]->sign == 'X')
+                gtk_button_set_label(GTK_BUTTON(buttons[i][j]), "X");
+            else if(game_data[i][j]->sign =='O')
+                gtk_button_set_label(GTK_BUTTON(buttons[i][j]), "O");
             else
                 gtk_button_set_label(GTK_BUTTON(buttons[i][j]), " ");
         }
