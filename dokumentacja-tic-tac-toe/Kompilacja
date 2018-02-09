@@ -1,0 +1,2 @@
+W projekcie wykorzystano bibliotekę Gtk+3.0
+Program należy kompilować komendą: gcc -std=c99 -Wall board_drawing.c main.c tic_tac_toe.h game_logic.c communication.c `pkg-config gtk+-3.0 --cflags --libs`

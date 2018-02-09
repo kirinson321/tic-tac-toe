@@ -1,0 +1,17 @@
+Projekt G6 - kółko i krzyżyk
+Marcin Trajfacki, 301199
+
+W celu uruchomienia projektu należy go skompilować. Szczegółowe instrukcje znajdują się w pliku "Kompilacja".
+Po skompilowaniu programu należy go uruchomić. 
+Przy pierwszym uruchomieniu nie należy podawać żadnego argumentu.
+Przy każdym kolejnym należy przekazać argument A lub B, oraz, jeśli przekazywany jest argument A, liczbę z zakresu 3-9.
+Przykładowy zestaw komend do uruchomienia gry: ./a.out; ./a.out A 5; ./a.out B;
+
+Rozgrywka toczy się w trybie turowym, przy czym rozpoczyna ją gracz B.
+Możliwe do wykonania są dwa rodzaje ruchu: ruch A oraz ruch B.
+Ruch A polega na postawieniu swojego znaku na górze wybranej kolumny.
+Ruch B polega na wyjęciu z wybranej kolumny znaku, przesunięciu kolumny w dół, położeniu wyjętego znaku na jej górze oraz dołożeniu powyżej własnego znaku.
+Gra samodzielnie interpretuje kliknięcia gracza; jeśli kliknięty zostanie wolny obszar w danej kolumnie, wykonany zostanie ruch A; w przeciwnym przypadku wykonany zostanie ruch B.
+Sterowanie odbywa się za pomocą lewego przycisku myszy.
+Jeśli któryś z graczy wygra, pojawi się odpowiedni komunikat, a gra zostanie zamknięta.
+Można ją również zamknąć używając przycisku "X", zwykle znajdującego się w belce na górze okna programu.
